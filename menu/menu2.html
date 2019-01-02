@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Menu2</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		#menu{
+			display:table;
+			background:#F2DA9C;
+			margin:100px auto;
+			padding:10px 20px 7px 15px;
+			border-radius:10px;
+		}
+		.menu_in{
+			display:inline-block;
+			width:147px;
+			position:relative;
+		}
+		a{
+			display:inline-block;
+			border-left:1px solid;
+			border-color:  #904397;
+			padding:0 0 0 2px; /* если (.link_bg display:block) padding:0 0 0 2px;  если (.link_bg display:inline-block) padding:0 0 0 0px; */
+			font:20px Arial, Helvetica, sans-serif;
+			color:#904397;
+			width:148px;  /* если (.link_bg display:block) width:148px;  если (.link_bg display:inline-block) width:150px; */
+			text-align:center;  /*  это свойство влияет на узор ссылки  */
+			text-decoration:none;
+			text-transform:uppercase;
+			height:40px;
+			line-height:40px;
+		} 
+		a:last-child{
+			border-right:1px solid;
+		}
+		#active{
+			width:146px;
+			color:#F2DA9C;
+		}
+		.link_bg{
+			background:#95520E;
+			display:block; /* (display:block; и display:inline-block;) меняют узор ссылки  */
+			width:0px;
+			height:40px;
+			cursor:pointer;
+			text-align:center;
+			-webkit-transition:width .8s,color .8s;
+			transition:width .8s,color .8s;
+		}
+		span{
+			height:40px;
+			line-height:40px;
+			position:absolute;
+			left:50px;
+			top:0px;
+		}
+		#link_1{
+			left:46px;
+		}
+		#link_2{
+			left:28px;
+		}
+		#link_3{
+			left:52px;
+		}
+		#link_4{
+			left:41px;
+		}
+		#link_5{
+			left:53px;
+		}
+		a:hover .link_bg{
+			width:146px;
+			color:#F2DA9C;
+		}
+	</style>
+</head>
+<body>
+	<div id="menu">
+		<div class="menu_in">
+			<a href="#">
+				<div class="link_bg">
+					<span id="link_1">Home</span>
+				</div>
+			</a>
+		</div>
+		<div class="menu_in">
+			<a href="#">
+				<div class="link_bg" id="active">
+					<span id="link_2">Contact</span>
+				</div>
+			</a>
+		</div>
+		<div class="menu_in">
+			<a href="#">
+				<div class="link_bg">
+					<span id="link_3">Tell</span>
+				</div>
+			</a>
+		</div>
+		<div class="menu_in">
+			<a href="#">
+				<div class="link_bg">
+					<span id="link_4">About</span>
+				</div>
+			</a>
+		</div>
+		<div class="menu_in">
+			<a href="#">
+				<div class="link_bg">
+					<span id="link_5">Map</span>
+				</div>
+			</a>
+		</div>
+	</div>
+</body>
+</html>

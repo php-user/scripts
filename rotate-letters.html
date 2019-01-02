@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta cnarset="utf-8">
+	<title>Rotate letters</title>
+	<style>	
+		#res{
+			display: inline-block;
+			margin: 110px 0 0 -90px;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="res"></div>
+
+<script>
+	var res = document.querySelector('#res');
+	var str = 'Howdy world';
+	var strLength = str.length - 1;
+
+	for (var i = 0; i <= strLength; i++) {
+		var letter = str.substr(i, 1);
+		var text = document.createTextNode(letter);
+		var span = document.createElement('span');
+		span.appendChild(text);
+
+		span.style.display = 'inline-block';
+		span.style.marginRight = '10px';
+		span.style.transform = 'rotate(-90deg)';
+		
+		res.appendChild(span);
+	}
+
+	res.style.display = 'inline-block';
+	res.style.transform = 'rotate(90deg)';
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cahrenheit to celsius converter</title>
+  <style>
+    body {
+      padding: 20px 0 0;
+    }
+
+    #form {
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    #form input {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    #res span {
+      color: #d00;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+  
+    <div id="form">
+      <label for="fahrenheit">Fahrenheit to Celsius</label>
+      <hr>
+      <input 
+        type="text" 
+        name="fahrenheit"  
+        id="fahrenheit" 
+        autocomplete="of"
+        v-model.number="fahrenheit"
+        size="1"
+        autofocus
+        ref="input"
+      > &deg;F
+      <span id="res" ref="result"></span>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+  <script>
+    const myFunc = function (f) {
+      if (f || f === 0) {
+        let output = (5 / 9) * (f - 32);
+
+        if (isNaN(output)) {
+          output = 'Input the number ';
+          return output;
+        }
+        
+        return ' = <span>' + output.toFixed(2) + '</span> &deg;C';
+      } 
+    }
+
+    new Vue({
+      el: '#app',
+      data: {
+        fahrenheit: null,
+      },
+      updated () {
+        let output = myFunc(this.fahrenheit);
+        this.$refs.result.innerHTML = output ? output : '';
+      },
+      mounted () {
+        this.$refs.input.focus()
+      }
+    });
+  </script>
+
+</body>
+</html>

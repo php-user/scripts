@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Китайский гороскоп</title>
+	<style>
+		*{margin:0; padding:0;}
+		body{background:#fff; color:#000; font-family:"Times New Roman", Times, serif;}
+		#container{padding:20px 30px;}
+		h2{margin:0 0 30px;}
+		label span{font-size:18px;}
+		input{border:1px solid #aaa; width:80px; height:22px; padding:0 10px;}
+		input:focus{outline:none;}
+		button{background:#eee; border:1px solid #aaa; width:80px; height:24px; transition:background .2s, color .2s; -webkit-transition:background .2s, color .2s; cursor:pointer;}
+		button:hover{background:#369; color:#fff;}
+		button:focus{outline:none;}
+		#result{margin:15px 0 0; font-size:18px;}
+		
+	</style>
+	<script type="text/javascript">
+		function foundYear(){
+			var str = document.getElementById('str').value;
+			var re = /^\d{1,}$/;
+
+			//if(!re.test(str)){
+			if(!str.match(re)){
+				var resultString = "Год введён неправильном формате";
+			}
+			else{
+				var res = '';
+				switch((str - 4) % 12){
+					case  0: res = 'Крысы';    break;
+					case  1: res = 'Быка';     break;
+					case  2: res = 'Тигра';    break;
+					case  3: res = 'Кролика';  break;
+					case  4: res = 'Дракона';  break;
+					case  5: res = 'Змеи';     break;
+					case  6: res = 'Лошади';   break;
+					case  7: res = 'Овцы';     break;
+					case  8: res = 'Обезьяны'; break;
+					case  9: res = 'Петуха';   break;
+					case 10: res = 'Собаки';   break;
+					case 11: res = 'Свиньи';   break;
+				}
+				resultString = str + ' - год ' + res;
+			}
+			var result = document.getElementById('result');
+			result.innerHTML = resultString;
+			document.getElementById('str').value = '';
+		}
+	</script>
+</head>
+<body>
+<div id="container">
+	<h2>Китайский гороскоп</h2>
+	<form onsubmit="return false">
+		<label><span>Введите год:</span><br>
+			<input type="text" id="str" autocomplete="off">
+		</label>
+		<button onclick="foundYear()">Узнать</button>
+	</form>
+	<div id="result"></div>
+</div>
+</body>
+</html>

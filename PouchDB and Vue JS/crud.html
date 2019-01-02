@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/7.0.0/pouchdb.min.js"></script>
+
+</head>
+<body>
+  <div id="app" class="mt-4">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h1 class="text-center app-title-class mt-1 mb-5">{{ title }}</h1>
+        </div>
+
+        <div class="col-sm-12 col-md-8 order-sm-2 order-md-1 mb-5 left">
+          <h4 class="mb-4">Users list</h4>
+          <table class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th width="130">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, key) in items" :key="item._id">
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.address }}</td>
+                <td>
+                  <button @click="edit(item)" class="btn btn-warning btn-sm">Edit</button>
+                  <button @click="destroy(item)" class="btn btn-danger btn-sm">Trash</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-sm-12 col-md-4 order-sm-1 order-md-2 mb-5">
+          <h4 class="mb-4">Add/Edit User</h4>
+          <form>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" name="name" id="name" v-model="input.name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" id="email" v-model="input.email">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" name="phone" id="phone" v-model="input.phone">
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" name="address" id="address" v-model="input.address">
+            </div>
+            <button v-if="savebtn" class="btn btn-primary" @click.prevent="save">Save</button>
+            <button v-if="updatebtn" class="btn btn-primary" @click.prevent="update(input._id)">Update</button>
+            <button class="btn btn-info" @click.prevent="clear">Clear</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script>
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    window.db = new PouchDB('crud');
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        title: 'VueJS PouchDB CRUD',
+        items: [],
+        input: {
+          _id: '',
+          name: '',
+          email: '',
+          phone: '',
+          address: '',
+        },
+        savebtn: true,
+        updatebtn: false
+      },
+
+      created () {
+        this.view();
+      },
+      methods: {
+        view () {
+          let vm = this;
+          db.allDocs({
+            include_docs: true
+          }).then((response) => {
+            for (var i = 0; i < response.rows.length; i++) {
+              vm.items.push(response.rows[i].doc);
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
+        },
+        save () {
+          var timeStamp = + new Date();
+          var id = timeStamp.toString();
+          var name = this.input.name;
+          var email = this.input.email;
+          var phone = this.input.phone;
+          var address = this.input.address;
+
+          if (name == '') {
+            alert('Name is required');
+            return;
+          }
+          if (!validateEmail(email)) {
+            alert('Wrong email');
+            return;
+          }
+          if (phone == '') {
+            alert('Phone is required');
+            return;
+          }
+          if (address == '') {
+            alert('Address is required');
+            return;
+          }
+
+          db.put({
+            _id: id,
+            name: name,
+            email: email,
+            phone: phone,
+            address: address
+          }).then((response) => {
+
+          }).catch((error) => {
+            console.log(error);
+          });
+
+          this.items.push({_id: id, name: name, email: email, phone: phone, address});
+          this.clear();
+
+          swal('Added', 'Foo data', 'success');
+        },
+        clear () {
+          this.savebtn = true;
+          this.updatebtn = false;
+          this.input._id = '';
+          this.input.name = '';
+          this.input.email = '';
+          this.input.phone = '';
+          this.input.address = '';
+        },
+        edit (item) {
+          this.savebtn = false;
+          this.updatebtn = true;
+
+          this.input._id = item._id;
+          this.input.name = item.name;
+          this.input.email = item.email;
+          this.input.phone = item.phone;
+          this.input.address = item.address;
+        },
+        update (id) {
+          var cnt = 0;
+
+          for (var i = 0; i <= this.items.length - 1; i++) {
+            if (id === this.items[i]._id) {
+              cnt = i;
+              break;
+            }
+          }
+
+          Object.assign(this.items[cnt], this.input);
+
+          var name = this.input.name;
+          var email = this.input.email;
+          var phone = this.input.phone;
+          var address = this.input.address;
+
+          if (name == '') {
+            alert('Name is required');
+            return;
+          }
+          if (!validateEmail(email)) {
+            alert('Wrong email');
+            return;
+          }
+          if (phone == '') {
+            alert('Phone is required');
+            return;
+          }
+          if (address == '') {
+            alert('Address is required');
+            return;
+          }
+
+          db.get(id).then((doc) => {
+            return db.put({
+              _id: id,
+              _rev: doc._rev,
+              name:name,
+              email:email,
+              phone:phone,
+              address:address,
+            })
+          }).then((response) => {
+            
+          }).catch((error) => {
+            console.log(error);
+          });
+
+          this.clear();
+
+          swal('Updated', 'Foo data', 'success')
+        },
+        destroy (item) {
+          var del = this.items.indexOf(item);
+
+          swal({
+            title: "Are you sure?",
+            text: "Foo data",
+            icon: 'error',
+            buttons: true
+          }).then((willDelete) => {
+            if (willDelete) {
+              this.items.splice(del, 1);
+
+              db.get(item._id).then((doc) => {
+                return db.remove(doc)
+              }).then((response) => {
+                
+              }).catch((error) => {
+                console.log(error);
+              });
+            } else {
+
+            }
+          })
+        }
+      }
+    });
+  </script>
+
+  <style scoped>
+    .app-title-class {
+      font-size: 30px; 
+    }
+    .left {
+      border-right: 1px solid #ccc;
+    }
+    label:after {
+      content: " *";
+      color: #d00;
+    }
+  </style>
+</body>
+</html>

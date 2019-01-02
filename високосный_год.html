@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Високосный или невысокосный</title>
+	<script>
+		function getYear(){
+			var year = document.getElementById('year').value;
+			var result = document.getElementById('result');
+			var re = /^\d{1,4}$/;
+			
+			if(year === ''){
+				result.innerHTML = 'Дата не введена!';
+			}
+			else if(!year.match(re)){
+				result.innerHTML = 'Неправильный формат даты';
+			}
+			else{
+				var a = (year % 4 == 0);
+				var b = (year % 100 == 0);
+				var c = (year % 400 == 0);
+				
+				var res = (a && !b || c) ? 'високосный.' : 'невисокосный.';
+				result.innerHTML = '<span>' + year + '</span> - год ' + res;
+			}
+			document.getElementById('year').value = '';
+		}
+	</script>
+	<style>
+		#result{margin:20px 0 0; font-size:18px;}
+		#result span{color:#ff0000;}
+		input:focus::-moz-placeholder{color:transparent;}
+	</style>
+</head>
+<body>
+<div id="container">
+	<h2>Високосный или невысокосный</h2>
+	<form onsubmit="return false">
+		<label>Введите год:
+			<input type="text" id="year" size="10" placeholder="xxxx">
+		</label>
+		<button onclick="getYear()">Проверить</button>
+	</form>
+	<div id="result"></div>
+</div>
+</body>
+</html>

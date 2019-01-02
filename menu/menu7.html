@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>menu7</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		ul{
+			list-style:none;
+			display:table;
+			margin:100px auto;
+		}
+		ul li{
+			float:left;
+			margin:0 5px;
+		}
+		a{
+			display:block;
+			text-decoration:none;
+			font:16px Arial;
+			text-transform:uppercase;
+			color:#333;
+			padding:20px 60px;
+			position:relative;
+			border-top:3px solid red;
+			border-bottom:3px solid green;
+			-webkit-transform:rotate(0deg);
+			transform:rotate(0deg);
+			-webkit-transition:-webkit-transform .5s;
+			transition:transform .5s;
+		}
+		#active{
+			-webkit-transform:rotate(-180deg);
+			transform:rotate(-180deg);
+			color:#000;
+		}
+		#active span{
+			-webkit-transform:rotate(-180deg);
+			transform:rotate(-180deg);
+		}
+		span{
+			position:absolute;
+		}
+		#id_1{
+			top:27%;
+			left:30%;
+		}
+		#id_2{
+			top:27%;
+			left:27%;
+		}
+		#id_3{
+			top:27%;
+			left:18%;
+		}
+		#id_4{
+			top:27%;
+			left:35%;
+		}
+		#id_5{
+			top:27%;
+			left:35%;
+		}
+		a:hover{
+			-webkit-transform:rotate(-180deg);
+			transform:rotate(-180deg);
+		}
+		a:hover span{
+			-webkit-transform:rotate(180deg);
+			transform:rotate(180deg);
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li><a href="#" id="active"><span id="id_1">Home</span></a></li>
+		<li><a href="#"><span id="id_2">About</span></a></li>
+		<li><a href="#"><span id="id_3">Contact</span></a></li>
+		<li><a href="#"><span id="id_4">Map</span></a></li>
+		<li><a href="#"><span id="id_5">Link</span></a></li>
+	</ul>
+</body>
+</html>

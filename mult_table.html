@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Таблица умножения</title>
+	<style>
+		#container{
+			padding:0 20px;
+		}
+		h2{
+			margin:0 0 30px;
+		}
+		form{
+			width:300px;
+			overflow:hidden;
+		}
+		label{
+			display:block;
+			overflow:hidden;
+			margin:0 0 5px;
+			line-height:22px;
+		}
+		input{
+			border:1px solid #aaa;
+			float:right;
+			width:120px;
+			height:22px;
+			padding:0 5px;
+		}
+		button{
+			border:1px solid #aaa;
+			background:#eee;
+			float:right;
+			width:132px;
+			height:24px;
+			cursor:pointer;
+			-webkit-transition:background .2s, color .2s;
+			transition:background .2s, color .2s;
+		}
+		button:hover{
+			background:#369;
+			color:#fff;
+		}
+		table{
+			text-align:center;
+			margin:50px 0 0;
+			border-collapse:collapse;
+		}
+		th, td{
+			border:1px solid #aaa;
+			padding:3px;
+		}
+	</style>
+	<script type="text/javascript">
+		function returnTable(rows, cols, color, table){
+			for(var i = 1; i <= rows; i++){
+				var tr = document.createElement('tr');
+					for(var j = 1; j <= cols; j++){
+						if(i == 1 || j == 1){
+							var th = document.createElement('th');
+							th.innerHTML = i * j;
+							th.style.background = color;
+							tr.appendChild(th);
+						}
+						else{
+							var td = document.createElement('td');
+							td.innerHTML = i * j;
+							tr.appendChild(td);
+						}
+					}
+				table.appendChild(tr);
+			}
+		}
+	
+		function getTable(){
+			var table = document.getElementById('result');
+			while(table.hasChildNodes())
+				table.removeChild(table.lastChild);
+		
+			var rows = document.getElementById('txtRows').value;
+			var cols = document.getElementById('txtCols').value;
+			var color = document.getElementById('txtColor').value;
+			
+			if(rows == '' && cols == '' && color == ''){
+				if(rows == '') rows = 10;
+				if(cols == '') cols = 10;
+				if(color == '') color = '#DC3304';
+				
+				returnTable(rows, cols, color, table);
+			}
+			else{
+				var rowPattern = /^\d{1,}$/; 
+				var colPattern = /^\d{1,}$/;
+				var colorPattern1 = /^#[a-f|0-9]{6}$/i;
+				var colorPattern2 = /^[a-z]{1,}$/i;
+				
+				if(rows.match(rowPattern) && cols.match(colPattern) && (color.match(colorPattern1) || color.match(colorPattern2))){
+					returnTable(rows, cols, color, table);
+				}
+				else{
+					var tr = document.createElement('tr');
+					var td = document.createElement('td');
+					td.innerHTML = 'Данные введены неправильно!!!';
+					tr.appendChild(td);
+					table.appendChild(tr);
+				}
+			}
+			
+			document.getElementById('txtRows').value = '';
+			document.getElementById('txtCols').value = '';
+			document.getElementById('txtColor').value = '';
+		}
+		
+		window.onload = getTable;
+	</script>
+</head>
+<body>
+<div id="container">
+	<h2>Таблица умножения</h2>
+	<form onsubmit="return false"> 
+		<label>Количество рядов:
+			<input type="text" id="txtRows" autocomplete="off">
+		</label>
+		<label>Количество столбцов:
+			<input type="text" id="txtCols" autocomplete="off">
+		</label>
+		<label>Выберите цвет:
+			<input type="text" id="txtColor" autocomplete="off">
+		</label>
+		<button onclick="getTable()">Показать</button>
+	</form>
+	<table id="result"></table>
+</div>
+</body>
+</html>
